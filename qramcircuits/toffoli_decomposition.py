@@ -1,9 +1,29 @@
-from enum import Enum, auto
+from enum import Enum, auto, EnumMeta
+import random
+from quantify.utils.counting_utils import *
+import quantify.utils.clifford_t_utils as ctu
 
-from utils.counting_utils import *
-import utils.clifford_t_utils as ctu
 
-class ToffoliDecompType(Enum):
+class RANDOM_ATTR(EnumMeta):
+    @property
+    def RANDOM(self):
+        return random.choice([ToffoliDecompType.ZERO_ANCILLA_TDEPTH_3,
+                              ToffoliDecompType.ZERO_ANCILLA_TDEPTH_3_DEPTH_10,
+                              ToffoliDecompType.ONE_ANCILLA_TDEPTH_2,
+                              ToffoliDecompType.FOUR_ANCILLA_TDEPTH_1_A,
+                              ToffoliDecompType.FOUR_ANCILLA_TDEPTH_1_B,
+                              ToffoliDecompType.FOUR_ANCILLA_TDEPTH_1_B_P,
+                              ToffoliDecompType.FOUR_ANCILLA_TDEPTH_1_B_PP,
+                              ToffoliDecompType.ZERO_ANCILLA_TDEPTH_2_COMPUTE,
+                              ToffoliDecompType.ZERO_ANCILLA_TDEPTH_0_UNCOMPUTE,
+                              ToffoliDecompType.FOUR_ANCILLA_TDEPTH_1_COMPUTE,
+                              ToffoliDecompType.ONE_ANCILLA_TDEPTH_4,
+                              ToffoliDecompType.ZERO_ANCILLA_TDEPTH_4,
+                              ToffoliDecompType.ZERO_ANCILLA_TDEPTH_4_COMPUTE,
+                              ])
+
+
+class ToffoliDecompType(Enum, metaclass=RANDOM_ATTR):
     #
     # If decomps are added, for the moment, update number_of_ancilla() below
     #
