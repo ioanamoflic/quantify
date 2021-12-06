@@ -9,17 +9,15 @@ class RANDOM_ATTR(EnumMeta):
     def RANDOM(self):
         return random.choice([ToffoliDecompType.ZERO_ANCILLA_TDEPTH_3,
                               ToffoliDecompType.ZERO_ANCILLA_TDEPTH_3_DEPTH_10,
+                              ToffoliDecompType.ZERO_ANCILLA_TDEPTH_2_COMPUTE,
+                              ToffoliDecompType.ZERO_ANCILLA_TDEPTH_4,
+                              ToffoliDecompType.ZERO_ANCILLA_TDEPTH_4_COMPUTE,
                               ToffoliDecompType.ONE_ANCILLA_TDEPTH_2,
                               ToffoliDecompType.FOUR_ANCILLA_TDEPTH_1_A,
                               ToffoliDecompType.FOUR_ANCILLA_TDEPTH_1_B,
                               ToffoliDecompType.FOUR_ANCILLA_TDEPTH_1_B_P,
                               ToffoliDecompType.FOUR_ANCILLA_TDEPTH_1_B_PP,
-                              ToffoliDecompType.ZERO_ANCILLA_TDEPTH_2_COMPUTE,
-                              ToffoliDecompType.ZERO_ANCILLA_TDEPTH_0_UNCOMPUTE,
-                              ToffoliDecompType.FOUR_ANCILLA_TDEPTH_1_COMPUTE,
-                              ToffoliDecompType.ONE_ANCILLA_TDEPTH_4,
-                              ToffoliDecompType.ZERO_ANCILLA_TDEPTH_4,
-                              ToffoliDecompType.ZERO_ANCILLA_TDEPTH_4_COMPUTE,
+                              ToffoliDecompType.FOUR_ANCILLA_TDEPTH_1_COMPUTE
                               ])
 
 
@@ -27,37 +25,42 @@ class ToffoliDecompType(Enum, metaclass=RANDOM_ATTR):
     #
     # If decomps are added, for the moment, update number_of_ancilla() below
     #
-    NO_DECOMP = auto()
+    # NO_DECOMP = auto()
 
     # Equation 3 from arxiv:1210.0974v2
-    ZERO_ANCILLA_TDEPTH_3 = auto()
+    ZERO_ANCILLA_TDEPTH_3 = 0
 
     #Decomp from Thaplyal
-    ZERO_ANCILLA_TDEPTH_3_DEPTH_10 = auto()
+    ZERO_ANCILLA_TDEPTH_3_DEPTH_10 = 1
+
+    ZERO_ANCILLA_TDEPTH_2_COMPUTE = 2
+
+    ZERO_ANCILLA_TDEPTH_4 = 3
+
+    ZERO_ANCILLA_TDEPTH_4_COMPUTE = 4
+
+    ZERO_ANCILLA_TDEPTH_0_UNCOMPUTE = 5
+
 
     # Figure 3 from arxiv:1303.2042
-    ONE_ANCILLA_TDEPTH_2 = auto()
+    ONE_ANCILLA_TDEPTH_2 = 6
 
     # Figure 1 from from arxiv:1210.0974v2
-    FOUR_ANCILLA_TDEPTH_1_A = auto()
+    FOUR_ANCILLA_TDEPTH_1_A = 7
 
     # Figure 6 from from arxiv:1303.2042
-    FOUR_ANCILLA_TDEPTH_1_B = auto()
-    FOUR_ANCILLA_TDEPTH_1_B_P = auto()
-    FOUR_ANCILLA_TDEPTH_1_B_PP = auto()
+    FOUR_ANCILLA_TDEPTH_1_B = 8
+    FOUR_ANCILLA_TDEPTH_1_B_P = 9
+    FOUR_ANCILLA_TDEPTH_1_B_PP = 10
 
     # arxiv:1709.06648 Figure 3
-    ZERO_ANCILLA_TDEPTH_2_COMPUTE = auto()
 
     # arxiv:1709.06648 Figure 3
-    ZERO_ANCILLA_TDEPTH_0_UNCOMPUTE = auto()
 
-    FOUR_ANCILLA_TDEPTH_1_COMPUTE = auto()
+    FOUR_ANCILLA_TDEPTH_1_COMPUTE = 11
 
     # experimental
-    ONE_ANCILLA_TDEPTH_4 = auto()
-    ZERO_ANCILLA_TDEPTH_4 = auto()
-    ZERO_ANCILLA_TDEPTH_4_COMPUTE = auto()
+    ONE_ANCILLA_TDEPTH_4 = 12
 
 
 class ToffoliDecomposition():
@@ -136,16 +139,17 @@ class ToffoliDecomposition():
     def decomposition(self):
         moments = []
 
-        if self.decomp_type == ToffoliDecompType.NO_DECOMP:
-
-            # No decomposition at all
-
-
-
-            moments.append(
-                    cirq.Moment([cirq.TOFFOLI.on(*self.qubits)])
-            )
-        elif self.decomp_type == ToffoliDecompType.ZERO_ANCILLA_TDEPTH_3:
+        # if self.decomp_type == ToffoliDecompType.NO_DECOMP:
+        #
+        #     # No decomposition at all
+        #
+        #
+        #
+        #     moments.append(
+        #             cirq.Moment([cirq.TOFFOLI.on(*self.qubits)])
+        #     )
+        # el
+        if self.decomp_type == ToffoliDecompType.ZERO_ANCILLA_TDEPTH_3:
             # Equation 3 from arxiv:1210.0974v2
             # No ancilla, T-depth 3
             moments += [
