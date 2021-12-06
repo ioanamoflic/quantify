@@ -1,7 +1,7 @@
 import cirq
 
-import utils.clifford_t_utils as ctu
-import utils.counting_utils as count
+import quantify.utils.clifford_t_utils as ctu
+import quantify.utils.counting_utils as count
 
 from .invariant_check_optimizer import InvariantCheckOptimizer
 

@@ -1,6 +1,6 @@
 import cirq
-from mathematics.control_adder  import ControlAdder
-from mathematics.control_toffoli import ControlToffoli
+from quantify.mathematics.control_adder  import ControlAdder
+from quantify.mathematics.control_toffoli import ControlToffoli
 
 class multiplier:
     def __init__(self, A, B):

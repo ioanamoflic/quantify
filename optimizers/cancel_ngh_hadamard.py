@@ -1,6 +1,6 @@
 import cirq
 
-import utils.misc_utils as mu
+import quantify.utils.misc_utils as mu
 
 from .transfer_flag_optimizer import TransferFlagOptimizer
 

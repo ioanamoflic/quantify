@@ -1,6 +1,6 @@
 import cirq
 
-import utils.clifford_t_utils as ctu
+import quantify.utils.clifford_t_utils as ctu
 
 class CommuteTGatesToStart():
     
