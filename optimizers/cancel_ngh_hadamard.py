@@ -1,12 +1,17 @@
 import cirq
 
 import quantify.utils.misc_utils as mu
-
 from .transfer_flag_optimizer import TransferFlagOptimizer
 
+
 class CancelNghHadamards(TransferFlagOptimizer):
+    def __init__(self, optimize_till: int = None):
+        super().__init__()
+        self.optimize_till = optimize_till
 
     def optimization_at(self, circuit, index, op):
+        if self.optimize_till is not None and index >= self.optimize_till:
+            return None
 
         if not (isinstance(op, cirq.GateOperation) and (op.gate == cirq.H)):
             return None
@@ -30,8 +35,9 @@ class CancelNghHadamards(TransferFlagOptimizer):
             if self.transfer_flag:
                 mu.transfer_flags(circuit, op.qubits[0], index, n_idx)
 
-            return cirq.PointOptimizationSummary(clear_span= n_idx - index + 1,
-                                            clear_qubits=op.qubits,
-                                            new_operations=[])
+            print('Hadamards cancelled ', index)
+            return cirq.PointOptimizationSummary(clear_span=n_idx - index + 1,
+                                                 clear_qubits=op.qubits,
+                                                 new_operations=[])
 
         return None
