@@ -1,14 +1,18 @@
 import cirq
 
+from .transfer_flag_optimizer import TransferFlagOptimizer
 import quantify.utils.misc_utils as mu
 
-from .transfer_flag_optimizer import TransferFlagOptimizer
 
 class CancelNghCNOTs(TransferFlagOptimizer):
     # Cancels two neighbouring CNOTs
+    def __init__(self, optimize_till: int = None):
+        super().__init__()
+        self.optimize_till = optimize_till
 
     def optimization_at(self, circuit, index, op):
-
+        if self.optimize_till is not None and index >= self.optimize_till:
+            return None
         if isinstance(op, cirq.GateOperation) and (op.gate == cirq.CNOT):
 
             if self.transfer_flag and (not mu.has_flag(op)):
@@ -57,6 +61,8 @@ class CancelNghCNOTs(TransferFlagOptimizer):
 
                 if self.transfer_flag:
                     mu.transfer_flags(circuit, op.qubits[0], index, nxt_1)
+
+                print('Cnots cancelled ', index)
 
                 return cirq.PointOptimizationSummary(
                     clear_span = nxt_1 - index + 1,  # Range of moments to affect.
