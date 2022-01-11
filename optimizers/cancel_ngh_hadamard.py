@@ -35,7 +35,7 @@ class CancelNghHadamards(TransferFlagOptimizer):
             if self.transfer_flag:
                 mu.transfer_flags(circuit, op.qubits[0], index, n_idx)
 
-            print('Hadamards cancelled ', index)
+            # print('Hadamards cancelled ', index)
             return cirq.PointOptimizationSummary(clear_span=n_idx - index + 1,
                                                  clear_qubits=op.qubits,
                                                  new_operations=[])
