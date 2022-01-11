@@ -9,6 +9,7 @@ class CancelNghCNOTs(TransferFlagOptimizer):
     def __init__(self, optimize_till: int = None):
         super().__init__()
         self.optimize_till = optimize_till
+        self.reward = 0.0
 
     def optimization_at(self, circuit, index, op):
         if self.optimize_till is not None and index >= self.optimize_till:
@@ -49,10 +50,10 @@ class CancelNghCNOTs(TransferFlagOptimizer):
                 and (next_op_cnot2.gate == cirq.CNOT) :
 
                 # theoretically nxt_1 and nxt_2 should be equal
-                if (nxt_1 != nxt_2):
+                if nxt_1 != nxt_2:
                     return None
 
-                if (next_op_cnot1 != next_op_cnot2):
+                if next_op_cnot1 != next_op_cnot2:
                     return None
 
                 if self.transfer_flag and (not mu.has_flag(next_op_cnot1)):
@@ -62,7 +63,7 @@ class CancelNghCNOTs(TransferFlagOptimizer):
                 if self.transfer_flag:
                     mu.transfer_flags(circuit, op.qubits[0], index, nxt_1)
 
-                print('Cnots cancelled ', index)
+                self.reward += 0.1
 
                 return cirq.PointOptimizationSummary(
                     clear_span = nxt_1 - index + 1,  # Range of moments to affect.
