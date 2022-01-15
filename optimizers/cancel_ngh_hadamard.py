@@ -13,7 +13,7 @@ class CancelNghHadamards(TransferFlagOptimizer):
         if self.optimize_till is not None and index >= self.optimize_till:
             return None
 
-        if not (isinstance(op, cirq.GateOperation) and (op.gate == cirq.H)):
+        if not (mu.my_isinstance(op, cirq.H)):
             return None
 
         if self.transfer_flag and (not mu.has_flag(op)):

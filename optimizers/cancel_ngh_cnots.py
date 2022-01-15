@@ -14,7 +14,8 @@ class CancelNghCNOTs(TransferFlagOptimizer):
     def optimization_at(self, circuit, index, op):
         if self.optimize_till is not None and index >= self.optimize_till:
             return None
-        if isinstance(op, cirq.GateOperation) and (op.gate == cirq.CNOT):
+
+        if mu.my_isinstance(op, cirq.CNOT):
 
             if self.transfer_flag and (not mu.has_flag(op)):
                 # Optimize only flagged operations
@@ -44,10 +45,8 @@ class CancelNghCNOTs(TransferFlagOptimizer):
             # print("next are ", next_op_h1, next_op_h2)
 
             # Are the operations Hadamards?
-            if isinstance(next_op_cnot1, cirq.GateOperation) \
-                and (next_op_cnot1.gate == cirq.CNOT) \
-                and isinstance(next_op_cnot2, cirq.GateOperation) \
-                and (next_op_cnot2.gate == cirq.CNOT) :
+            if mu.my_isinstance(next_op_cnot1, cirq.CNOT) \
+                and mu.my_isinstance(next_op_cnot2, cirq.CNOT) :
 
                 # theoretically nxt_1 and nxt_2 should be equal
                 if nxt_1 != nxt_2:

@@ -1,5 +1,11 @@
 import cirq
 
+# Alexandru: add LRU cache
+from functools import lru_cache
+@lru_cache(maxsize=10000)
+def my_isinstance(operation, spec_gate):
+    return isinstance(operation, cirq.GateOperation) and (operation.gate == spec_gate)
+
 def my_bin(value, nr_bits):
     # Get the integer bits of the controls/search by padding to n bits
     return bin(value)[2:].zfill(nr_bits)
