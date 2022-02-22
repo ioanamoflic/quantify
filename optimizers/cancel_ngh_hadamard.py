@@ -42,7 +42,7 @@ class CancelNghHadamards(TransferFlagOptimizer):
 
             if self.only_count:
                 self.count += 1
-                self.moment_index_qubit.append((CircuitIdentity.CANCEL_HADAMARDS, index, op.qubits[0]))
+                self.moment_index_qubit.append((CircuitIdentity.CANCEL_HADAMARDS.value, index, op.qubits[0]))
                 return None
 
             # print('Hadamards cancelled ', index)
