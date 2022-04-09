@@ -1,3 +1,5 @@
+from typing import List, Tuple
+
 import cirq
 from optimization.optimize_circuits import CircuitIdentity
 from .transfer_flag_optimizer import TransferFlagOptimizer
@@ -7,24 +9,28 @@ import quantify.utils.misc_utils as mu
 class CancelNghCNOTs(TransferFlagOptimizer):
     # Cancels two neighbouring CNOTs
 
-    def __init__(self, moment=None, qubit=None, only_count=False, count_between=False):
+    def __init__(self, moment=None, qubits=None, only_count=False, count_between=False):
         super().__init__()
-        self.only_count = only_count
-        self.count = 0
-        self.moment_index_qubit = []
-        self.moment = moment
-        self.qubit = qubit
-        self.start_moment = 0
-        self.end_moment = 0
-        self.count_between = count_between
+        self.only_count: bool = only_count
+        self.count: int = 0
+        self.moment_index_qubit: List[Tuple[int, int, List[cirq.Qid]]] = []
+        self.moment: int = moment
+        self.qubits: List[cirq.NamedQubit] = qubits
+        self.start_moment: int = 0
+        self.end_moment: int = 0
+        self.count_between: bool = count_between
 
     def optimization_at(self, circuit, index, op):
 
         if self.count_between and (index < self.start_moment or index > self.end_moment):
             return None
 
-        if (index != self.moment or op.qubits[0] != self.qubit) and not self.only_count and not self.count_between:
+        if (index != self.moment or (op.qubits[0] not in self.qubits and op.qubits[1] not in self.qubits)) \
+                and not self.only_count and not self.count_between:
             return None
+
+        # if index != self.moment and not self.only_count and not self.count_between:
+        #     return None
 
         if mu.my_isinstance(op, cirq.CNOT):
 
@@ -78,7 +84,7 @@ class CancelNghCNOTs(TransferFlagOptimizer):
 
                 if self.only_count:
                     self.count += 1
-                    self.moment_index_qubit.append((CircuitIdentity.CANCEL_CNOTS.value, index, op.qubits[0]))
+                    self.moment_index_qubit.append((CircuitIdentity.CANCEL_CNOTS.value, index, [control_qubit, target_qubit]))
                     return None
 
                 return cirq.PointOptimizationSummary(
